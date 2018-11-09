@@ -11,12 +11,14 @@ class Triangle
 
     if invalid 
       puts 'This is not triangle'
-    elsif isosceles && rectangular 
-      puts 'Triangle is rectangular & isosceles' 
-    elsif rectangular        
-      puts 'Triangle is rectangular' 
-    else
-      puts 'Triangle is equilateral & isosceles but not rectangular'
+    elsif isosceles && rectangular # равнобедренный и прямоугольный
+      puts 'Triangle is rectangular & isosceles'
+    elsif rectangular              # прямоугольный       
+      puts 'Triangle is rectangular'
+    elsif equilateral              # равносторонний, не прямоугольный
+      puts 'Triangle is equilateral & not rectangular' 
+    else                           # треугольник не прямоугольный
+      puts 'Triangle is not rectangular'
     end
   end
 end
