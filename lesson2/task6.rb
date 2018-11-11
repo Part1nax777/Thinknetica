@@ -1,12 +1,12 @@
 shop_basket = {}
 
 loop do
-  puts "Enter product name (enter 'stop' for complete): "
+  puts 'Enter product name (enter 'stop' for complete): '
   product = gets.chomp
   break if product == 'stop'
-  puts "Enter price: "
+  puts 'Enter price: '
   price = gets.to_f
-  puts "Enter quantity: "
+  puts 'Enter quantity: '
   quantity = gets.to_f
   shop_basket[product] = {price: price, quantity: quantity}
 end

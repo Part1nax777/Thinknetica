@@ -2,11 +2,11 @@ months = {1 => 31, 2 => 28, 3 => 31, 4 => 30, 5 => 31,
           6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31,
           11 => 30, 12 => 31}
 
-puts "Enter day: "
+puts 'Enter day: '
 day = gets.to_i
-puts "Enter month: "
+puts 'Enter month: '
 month = gets.to_i
-puts "Enter year: "
+puts 'Enter year: '
 year = gets.to_i
 
 year_100 = year%100 == 0 # не високосный
