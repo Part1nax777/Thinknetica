@@ -1,25 +1,25 @@
-shop_basket = {}
+shoping_cart = {}
 
 loop do
-  puts 'Enter product name (enter 'stop' for complete): '
+  puts 'Enter product name (enter stop for complete): '
   product = gets.chomp
   break if product == 'stop'
   puts 'Enter price: '
   price = gets.to_f
   puts 'Enter quantity: '
   quantity = gets.to_f
-  shop_basket[product] = {price: price, quantity: quantity}
+  shoping_cart[product] = { price: price, quantity: quantity }
 end
 
-puts shop_basket
+puts shoping_cart
 
-all_sum = 0
-shop_basket.each do |key, value|
-  price = value[:price]
-  quantity = value[:quantity]
+total = 0
+shoping_cart.each do |product, info|
+  price = info[:price]
+  quantity = info[:quantity]
   sum = price * quantity
-  all_sum += sum
-  puts "Product: #{key}, price: #{price}, quantity: #{quantity}, summary: #{sum}"
+  total += sum
+  puts "Product: #{product}, price: #{price}, quantity: #{quantity}, summary: #{sum}"
 end
 
-puts "Total amount of your purchase = #{all_sum}"
+puts "Total amount of your purchase = #{total}"

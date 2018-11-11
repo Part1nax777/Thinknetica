@@ -1,8 +1,1 @@
-arr = Array.new
-first = 10
-
-while first <= 100 do
-  arr << first
-  first += 5
-end
-  print arr
+print (10..100).step(5).to_a
