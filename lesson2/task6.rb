@@ -1,4 +1,4 @@
-shoping_cart = {}
+shopping_cart = {}
 
 loop do
   puts 'Enter product name (enter stop for complete): '
@@ -8,13 +8,13 @@ loop do
   price = gets.to_f
   puts 'Enter quantity: '
   quantity = gets.to_f
-  shoping_cart[product] = { price: price, quantity: quantity }
+  shopping_cart[product] = { price: price, quantity: quantity }
 end
 
-puts shoping_cart
+puts shopping_cart
 
 total = 0
-shoping_cart.each do |product, info|
+shopping_cart.each do |product, info|
   price = info[:price]
   quantity = info[:quantity]
   sum = price * quantity
