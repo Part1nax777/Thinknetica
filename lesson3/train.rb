@@ -40,7 +40,7 @@ class Train
     @route.route_stations[0].take_train(self) 
   end
   #перемещение между станциями(на одну станцию за раз)
-  def moving_next_stations
+  def moving_next_station
     current_station.send_train(self)
     @station_position += 1
     current_station.take_train(self)
