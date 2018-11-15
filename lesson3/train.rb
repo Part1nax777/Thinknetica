@@ -37,7 +37,7 @@ class Train
   def train_route(route)
     @route = route
     #устанавливает в начальную точку поезд из списка поездов на станции  
-    @route.route_stations[0] 
+    @route.route_stations[0].take_train(self) 
   end
   #перемещение между станциями(на одну станцию за раз)
   def moving_next_stations
