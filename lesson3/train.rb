@@ -1,16 +1,16 @@
 class Train
-  attr_reader :train_number, :train_type, :quantity_wagons, :speed
+  attr_reader :number, :type, :quantity_wagons, :speed
 
-  def initialize(train_number, train_type, quantity_wagons)
-    @train_number = train_number
-    @train_type = train_type
+  def initialize(number, type, quantity_wagons)
+    @number = number
+    @type = type
     @quantity_wagons = quantity_wagons
     @speed = 0
     @route = nil
-    @station_position = 0
+    @station_index = 0
   end
   #набор скорости, по умолчанию поезд стоит
-  def speed_up(speed=0, acceleration)
+  def speed_up(acceleration)
     @speed += acceleration
   end
   #текущая скорость
@@ -18,12 +18,8 @@ class Train
     @speed 
   end
   #поезд тормозит
-  def speed_down
-    @speed = 0
-  end
-  #количество вагонов
-  def quantity_wagons
-    @quantity_wagons
+  def speed_down(slowdown)
+    @speed -= slowdown until @speed < 0
   end
   #прицеплять вагон
   def hook_wagon
@@ -31,36 +27,41 @@ class Train
   end
   #отцеплять вагон
   def unhook_wagon
-    @quantity_wagons -=1 if @speed == 0
+    @quantity_wagons -=1 if @speed == 0 && @quantity_wagons > 0 
   end
   #маршрут следования (маршрут из класса route)
-  def train_route(route)
+  def set_route(route)
     @route = route
+    @station_index = 0
     #устанавливает в начальную точку поезд из списка поездов на станции  
-    @route.route_stations[0].take_train(self) 
+    @route.stations[0].take_train(self) 
   end
   #перемещение между станциями(на одну станцию за раз)
   def moving_next_station
-    current_station.send_train(self)
-    @station_position += 1
+    return unless next_station 
+    current_station.send_train(self) 
     current_station.take_train(self)
+    @station_index += 1
   end
 
   def moving_previous_station
-    current_station.send_train(self)
-    @station_position -= 1
+    return unless previous_station
+    current_station.send_train(self)  
     current_station.take_train(self)
+    @station_index -= 1
   end 
   #предыдущая, текущая, следующая станция
   def previous_station
-    @route.route_stations[@station_position - 1] if @station_position > 0
+    return nil if @route == nil
+    @route.stations[@station_index - 1] if @station_index > 0
   end
 
   def current_station
-    @route.route_stations[@station_position]
+    @route.stations[@station_index]
   end
 
   def next_station
-    @route.route_stations[@station_position + 1]
+    return nil if @route == nil
+    @route.stations[@station_index + 1]
   end
 end

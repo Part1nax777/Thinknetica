@@ -9,13 +9,9 @@ class Station
   def take_train(train)
     @trains << train
   end
-  #список поездов на станции в данный момент
-  def train_list
-    @trains
-  end
   #список поездов на станции по типу
   def train_type_list(type_train)
-    @trains.select { |type| type.train_type == type_train}
+    @trains.select { |type| type.train_type == type_train }
   end
   #отправлять поезда (по одному за раз, удаляется из списка поездов находящихся на станции)
   def send_train(train)
