@@ -1,8 +1,8 @@
 class Station
-  attr_reader :trains, :station_name 
+  attr_reader :trains, :name 
 
   def initialize(station_name)
-    @station_name = station_name
+    @name = name
     @trains = []
   end
   #принимать поезда один за раз
@@ -11,7 +11,7 @@ class Station
   end
   #список поездов на станции по типу
   def train_type_list(type_train)
-    @trains.select { |type| type.train_type == type_train }
+    @trains.select { |type| train.type == type_train }
   end
   #отправлять поезда (по одному за раз, удаляется из списка поездов находящихся на станции)
   def send_train(train)

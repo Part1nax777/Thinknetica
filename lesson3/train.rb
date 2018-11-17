@@ -19,7 +19,11 @@ class Train
   end
   #поезд тормозит
   def speed_down(slowdown)
-    @speed -= slowdown until @speed < 0
+    if @speed > slowdown
+      @speed -= slowdown
+    else
+      @speed = 0
+    end
   end
   #прицеплять вагон
   def hook_wagon
@@ -40,14 +44,14 @@ class Train
   def moving_next_station
     return unless next_station 
     current_station.send_train(self) 
-    current_station.take_train(self)
+    next_station.take_train(self)
     @station_index += 1
   end
 
   def moving_previous_station
     return unless previous_station
     current_station.send_train(self)  
-    current_station.take_train(self)
+    previous_station.take_train(self)
     @station_index -= 1
   end 
   #предыдущая, текущая, следующая станция
