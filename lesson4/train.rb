@@ -1,12 +1,12 @@
 class Train
-  attr_reader :number, :type, :quantity_wagons, :speed
+  attr_reader :number, :type, :quantity_wagons, :speed, :route
 
-  def initialize(number, type, quantity_wagons)
+  def initialize(number, type)
     @number = number
     @type = type
-    @quantity_wagons = quantity_wagons
     @speed = 0
     @route = nil
+    @quantity_wagons = []
     @station_index = 0
   end
   #набор скорости, по умолчанию поезд стоит
@@ -26,8 +26,8 @@ class Train
     end
   end
   #прицеплять вагон
-  def hook_wagon
-    @quantity_wagons += 1 if @speed == 0
+  def hook_wagon(wagon)
+    @quantity_wagons << wagon if @speed == 0
   end
   #отцеплять вагон
   def unhook_wagon
