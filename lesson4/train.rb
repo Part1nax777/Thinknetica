@@ -5,15 +5,15 @@ class Train
     @number = number
     @type = type
     @speed = 0
-    @route = nil
+    @route = []
     @quantity_wagons = []
     @station_index = 0
   end
-  
+
   def speed_up(acceleration)
     @speed += acceleration
   end
-  
+
   def speed_down(slowdown)
     if @speed > slowdown
       @speed -= slowdown
@@ -21,17 +21,20 @@ class Train
       @speed = 0
     end
   end
-  
+
   def hook_wagon(wagon)
-    @quantity_wagons << wagon if @speed == 0 
+    if type_wagon(wagon)
+    @quantity_wagons << wagon if @speed == 0
+    print @quantity_wagons
+    end
   end
-  
+
   def unhook_wagon
     if @speed == 0 && @quantity_wagons.length > 0
     @quantity_wagons.pop
     end
   end
-  
+
   def set_route(route)
     @route = route
     @station_index = 0
