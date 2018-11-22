@@ -23,9 +23,8 @@ class Train
   end
 
   def hook_wagon(wagon)
-    if type_wagon(wagon)
-    @quantity_wagons << wagon if @speed == 0
-    print @quantity_wagons
+    if type_wagon(wagon) && @speed == 0
+    @quantity_wagons << wagon
     end
   end
 
