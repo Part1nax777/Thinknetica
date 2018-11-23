@@ -44,10 +44,18 @@ class Main
   5. Exit from program
   MENU
 
+  CHANGE_TYPE_TRAIN = <<-MENU.freeze
+  Enter train type:
+  1. Cargo
+  2. Passenger
+  MENU
+
   def start
     main_menu
   end
 
+  private
+  #используются в других методах изменение может отразится на работе программы
   def main_menu
     loop do
       puts MAIN_MENU
@@ -106,8 +114,6 @@ class Main
     end
   end
 
-  private
-  #используются в других методах изменение может отразится на работе программы
   def create_station
     puts 'Enter station name: '
     name = gets.chomp
@@ -131,59 +137,62 @@ class Main
   def create_train
     puts 'Enter train number: '
     number = gets.chomp
-    puts 'Enter train type:
-    1. Cargo
-    2. Passenger'
+    puts CHANGE_TYPE_TRAIN
     type = gets.to_i
       case type
       when 1
-        @trains << CargoTrain.new(number)
-        puts "Cargo train #{number} is create"
+      @trains << CargoTrain.new(number)
+      puts "Cargo train #{number} is create"
       when 2
-        @trains << PassengerTrain.new(number)
-        puts "Passenger train #{number} is create"
+      @trains << PassengerTrain.new(number)
+      puts "Passenger train #{number} is create"
       end
   end
 
   def set_route
     route = select_route
     train = select_train
+    return if route.nil? || train.nil?
     train.set_route(route)
     puts "Train #{train.number} go to the route"
   end
 
   def hook_wagon
     train = select_train
+    return if train.nil?
     if train.is_a?(CargoTrain)
-    train.hook_wagon(CargoWagon.new)
+      train.hook_wagon(CargoWagon.new)
     else
-    train.hook_wagon(PassengerWagon.new)
+      train.hook_wagon(PassengerWagon.new)
     end
     puts "Wagon hook train #{train.number}"
   end
 
   def unhook_wagon
     train = select_train
+    return if train.nil?
     train.unhook_wagon
     puts "Train consist of #{train.quantity_wagons.length} wagons"
   end
 
   def moving_next_station
     train = select_train
-    current_station_start = train.current_station
-    train.moving_next_station
-    current_station_finish = train.current_station
-    puts "Train moved from #{train.previous_station.name} to #{train.current_station.name}"
-    puts "Train stopeed in #{train.current_station.name}"
+    return if train.nil?
+    if train.moving_next_station
+      puts "Train moved from #{train.previous_station.name} to #{train.current_station.name}"
+    else
+      puts "Train stayed at #{train.current_station.name}" 
+    end
   end
 
   def moving_previouse_station
     train = select_train
-    current_station_start = train.current_station
-    train.moving_previous_station
-    current_station_finish = train.current_station
-    puts "Train moved from #{train.next_station.name} to #{train.current_station.name}"
-    puts "Train stopeed in #{train.current_station.name}"
+    return if train.nil?
+    if train.moving_previous_station
+      puts "Train moved from #{train.next_station.name} to #{train.current_station.name}"
+    else
+      puts "Train stayed at #{train.current_station.name}"
+    end
   end
 
   def create_route
@@ -191,6 +200,8 @@ class Main
     first_station = select_station
     puts 'Finish route'
     last_station = select_station
+    return if first_station.nil? || last_station.nil?
+    return if first_station == last_station
     @routes << Route.new(first_station, last_station)
     puts "Route #{first_station.name} to #{last_station.name} create"
   end
@@ -198,12 +209,14 @@ class Main
   def add_station
     route = select_route
     station = select_station
+    return if route.nil? || station.nil?
     route.add_intermediate_station(station)
     puts "Station #{station.name} is add to route"
   end
 
   def del_station
     route = select_route
+    return if route.nil?
     puts 'Train go to the route: '
     route.stations.each { |station| puts station.name }
     station = select_station

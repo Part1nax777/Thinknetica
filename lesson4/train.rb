@@ -5,7 +5,7 @@ class Train
     @number = number
     @type = type
     @speed = 0
-    @route = []
+    @route = nil
     @quantity_wagons = []
     @station_index = 0
   end
@@ -23,14 +23,14 @@ class Train
   end
 
   def hook_wagon(wagon)
-    if type_wagon(wagon) && @speed == 0
-    @quantity_wagons << wagon
+    if attachable_wagon?(wagon) && @speed == 0
+      @quantity_wagons << wagon
     end
   end
 
   def unhook_wagon
     if @speed == 0 && @quantity_wagons.length > 0
-    @quantity_wagons.pop
+      @quantity_wagons.pop
     end
   end
 

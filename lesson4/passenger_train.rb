@@ -1,6 +1,6 @@
 class PassengerTrain < Train
 
-   def type_wagon(wagon)
+   def attachable_wagon?(wagon)
     wagon.is_a?(PassengerWagon)
    end
 end
