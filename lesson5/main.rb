@@ -1,3 +1,12 @@
+require_relative 'train'
+require_relative 'station'
+require_relative 'route'
+require_relative 'wagon'
+require_relative 'passenger_wagon'
+require_relative 'cargo_wagon'
+require_relative 'passenger_train'
+require_relative 'cargo_train'
+
 class Main
 
   def initialize
@@ -181,7 +190,7 @@ class Main
     if train.moving_next_station
       puts "Train moved from #{train.previous_station.name} to #{train.current_station.name}"
     else
-      puts "Train stayed at #{train.current_station.name}" 
+      puts "Train stayed at #{train.current_station.name}"
     end
   end
 
@@ -197,9 +206,9 @@ class Main
 
   def create_route
     puts 'Start route'
-    first_station = select_station
+    first_station = select_station(@stations)
     puts 'Finish route'
-    last_station = select_station
+    last_station = select_station(@stations)
     return if first_station.nil? || last_station.nil?
     return if first_station == last_station
     @routes << Route.new(first_station, last_station)
@@ -208,7 +217,7 @@ class Main
 
   def add_station
     route = select_route
-    station = select_station
+    station = select_station(@stations)
     return if route.nil? || station.nil?
     route.add_intermediate_station(station)
     puts "Station #{station.name} is add to route"
@@ -217,21 +226,18 @@ class Main
   def del_station
     route = select_route
     return if route.nil?
-    puts 'Choise station for delete: '
-    route.stations.each_with_index { |station, i| puts "#{i + 1} #{station.name}" }
-    i = gets.to_i
-    station = route.stations[i - 1]
+    station = select_station(route.stations)
     route.del_intermediate_station(station)
     puts "Station #{station.name} is delete from route"
     puts 'Now route is: '
     route.stations.each { |station| puts station.name }
   end
 
-  def select_station
-    @stations.each_with_index { |station, i| puts "#{i + 1}. #{station.name}" }
+  def select_station(stations)
+    stations.each_with_index { |station, i| puts "#{i + 1}. #{station.name}" }
     puts 'Enter number station: '
     number = gets.to_i
-    @stations[number - 1]
+    stations[number - 1]
   end
 
   def select_route

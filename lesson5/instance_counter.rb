@@ -3,12 +3,13 @@ module InstanceCounter
   def self.included(base)
     base.extend ClassMethods
     base.send :include, InstanceMethods
-    base.class_variable_set(:@@instance_count, 0)
   end
 
   module ClassMethods
+    attr_writer :instances
+
     def instances
-      class_variable_get(:@@instance_count)
+      @instances ||= 0
     end
   end
 
@@ -16,12 +17,12 @@ module InstanceCounter
     protected
 
     def register_instance
-      self.class.class_variable_set(:@@instance_count, (self.class.class_variable_get(:@@instance_count) + 1))
+      self.class.instances += 1
     end
   end
 end
 
 
 
-   
+
 
