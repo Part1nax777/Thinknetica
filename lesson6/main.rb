@@ -1,3 +1,12 @@
+require_relative 'train'
+require_relative 'station'
+require_relative 'route'
+require_relative 'wagon'
+require_relative 'passenger_wagon'
+require_relative 'cargo_wagon'
+require_relative 'passenger_train'
+require_relative 'cargo_train'
+
 class Main
 
   def initialize
@@ -118,14 +127,12 @@ class Main
     puts 'Enter station name: '
     name = gets.chomp
     @stations << Station.new(name)
-    puts "Station #{name} is create"
   end
 
   def train_list
     @stations.each do |station|
       puts "In station #{station.name} stoped trains: "
       station.trains.each do |train|
-      puts "#{train.number}"
       end
     end
   end
@@ -154,7 +161,6 @@ class Main
     train = select_train
     return if route.nil? || train.nil?
     train.set_route(route)
-    puts "Train #{train.number} go to the route"
   end
 
   def hook_wagon
@@ -165,79 +171,62 @@ class Main
     else
       train.hook_wagon(PassengerWagon.new)
     end
-    puts "Wagon hook train #{train.number}"
   end
 
   def unhook_wagon
     train = select_train
     return if train.nil?
     train.unhook_wagon
-    puts "Train consist of #{train.quantity_wagons.length} wagons"
   end
 
   def moving_next_station
     train = select_train
     return if train.nil?
-    if train.moving_next_station
-      puts "Train moved from #{train.previous_station.name} to #{train.current_station.name}"
-    else
-      puts "Train stayed at #{train.current_station.name}" 
-    end
+    train.moving_next_station
   end
 
   def moving_previouse_station
     train = select_train
     return if train.nil?
-    if train.moving_previous_station
-      puts "Train moved from #{train.next_station.name} to #{train.current_station.name}"
-    else
-      puts "Train stayed at #{train.current_station.name}"
-    end
+    train.moving_previous_station
   end
 
   def create_route
     puts 'Start route'
-    first_station = select_station
+    first_station = select_station(@stations)
     puts 'Finish route'
-    last_station = select_station
+    last_station = select_station(@stations)
     return if first_station.nil? || last_station.nil?
     return if first_station == last_station
     @routes << Route.new(first_station, last_station)
-    puts "Route #{first_station.name} to #{last_station.name} create"
   end
 
   def add_station
     route = select_route
-    station = select_station
+    station = select_station(@stations)
     return if route.nil? || station.nil?
     route.add_intermediate_station(station)
-    puts "Station #{station.name} is add to route"
   end
 
   def del_station
     route = select_route
     return if route.nil?
-    puts 'Train go to the route: '
-    route.stations.each { |station| puts station.name }
-    station = select_station
+    station = select_station(route.stations)
     route.del_intermediate_station(station)
-    puts "Station #{station.name} is delete from route"
-    puts 'Now route is: '
-    route.stations.each { |station| puts station.name }
   end
 
-  def select_station
-    @stations.each_with_index { |station, i| puts "#{i + 1}. #{station.name}" }
+  def select_station(stations)
+    stations.each_with_index { |station, i| puts "#{i + 1}. #{station.name}" }
     puts 'Enter number station: '
     number = gets.to_i
-    @stations[number - 1]
+    stations[number - 1]
   end
 
   def select_route
     @routes.each_with_index { |route, i| puts "#{i + 1}. #{route.stations[0].name} to #{route.stations[-1].name}" }
     puts 'Enter number of route: '
     number = gets.to_i
-    @routes[number - 1]    
+    @routes[number - 1]
   end
 
   def select_train
