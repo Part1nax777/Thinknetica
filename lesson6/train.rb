@@ -85,6 +85,8 @@ class Train
     @route.stations[@station_index + 1]
   end
 
+  protected
+
   def validate!
     raise puts 'number must be in pattern XXX-XX or XXXXX' if number !~ TEMPLATE_NUMBER
   end
