@@ -9,7 +9,7 @@ class Train
   attr_reader :number, :type, :quantity_wagons, :speed, :route
 
   @@trains = {}
-  TEMPLATE_NUMBER = /(^[a-zA-Z0-9]{3}.*\w{2}\z)|(^[а-яА-Я0-9]{3}.*\w{2}\z)/
+  TEMPLATE_NUMBER = /(^([\w]{3}[-]?[\w]{2})|([А-Яа-я0-9]{3}[-]?[А-Яа-я0-9]{2})$)/
 
   def initialize(number)
     @number = number
@@ -19,8 +19,8 @@ class Train
     @quantity_wagons = []
     @station_index = 0
     @@trains[number] = self
-    register_instance
     validate!
+    register_instance
   end
 
   def self.find(number)
@@ -86,6 +86,6 @@ class Train
   end
 
   def validate!
-    rescue  puts 'number must be in pattern XX - XXX' if number !~ TEMPLATE_NUMBER 
+    raise puts 'number must be in pattern XXX-XX or XXXXX' if number !~ TEMPLATE_NUMBER
   end
 end

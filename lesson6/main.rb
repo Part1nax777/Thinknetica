@@ -127,6 +127,9 @@ class Main
     puts 'Enter station name: '
     name = gets.chomp
     @stations << Station.new(name)
+  rescue TypeError => e
+    puts "Error: #{e.message}"
+    retry
   end
 
   def train_list
@@ -154,6 +157,9 @@ class Main
       @trains << PassengerTrain.new(number)
       puts "Passenger train #{number} is create"
     end
+  rescue TypeError => e
+    puts "Error: #{e.message}"
+    retry
   end
 
   def set_route

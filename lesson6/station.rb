@@ -7,7 +7,7 @@ class Station
   attr_reader :trains, :name
 
   @@stations = []
-  TEMPLATE_NAME = /^([a-zA-Z0-9]{3,}$)|^([а-яА-Я0-9]{3,}$)/
+  TEMPLATE_NAME = /(^([\w]{3,})|([а-яА-Я0-9]{3,})$)/
 
   def initialize(name)
     @name = name
@@ -36,6 +36,6 @@ class Station
   protected
 
   def validate!
-    rescue puts 'Number station is not correct' if name !~ TEMPLATE_NAME
+    raise puts 'Name station is not correct' if name !~ TEMPLATE_NAME
   end
 end
