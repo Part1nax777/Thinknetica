@@ -5,11 +5,11 @@ require_relative 'validator'
 class Train
   include CompanyName
   include InstanceCounter
-  include Valid
+  include Validator
   attr_reader :number, :type, :quantity_wagons, :speed, :route
 
   @@trains = {}
-  TEMPLATE_NUMBER = /^[a-zа-я\d[^_]]{3}[-]?[a-zа-я\d[^_]]{2}$/i
+  TEMPLATE_NUMBER = /^[a-zа-я\d]{3}[-]?[a-zа-я\d]{2}$/i
   MSG_INCORRECT_NUMBER = 'Number must be in pattern XXX-XX or XXXXX'
 
   def initialize(number)

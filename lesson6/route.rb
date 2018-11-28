@@ -3,7 +3,7 @@ require_relative 'validator'
 
 class Route
   include InstanceCounter
-  include Valid
+  include Validator
 
   attr_reader :stations
   FIRST_AND_LAST_EQL = 'First station equals last_station'
@@ -35,7 +35,7 @@ class Route
   end
 
   def station_class?
-    @stations[0].is_a?(Station) || @stations[1].is_a?(Station)
+    @stations[0].is_a?(Station) && @stations[1].is_a?(Station)
   end
 
   def station_eql?

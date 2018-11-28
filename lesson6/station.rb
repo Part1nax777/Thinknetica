@@ -3,7 +3,7 @@ require_relative 'validator'
 
 class Station
   include InstanceCounter
-  include Valid
+  include Validator
   attr_reader :trains, :name
 
   @@stations = []
