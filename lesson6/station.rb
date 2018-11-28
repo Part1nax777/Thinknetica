@@ -1,5 +1,5 @@
 require_relative 'instance_counter'
-require_relative 'valid'
+require_relative 'validator'
 
 class Station
   include InstanceCounter
@@ -7,13 +7,14 @@ class Station
   attr_reader :trains, :name
 
   @@stations = []
-  TEMPLATE_NAME = /(^([\w]{3,})|([а-яА-Я0-9]{3,})$)/
+  TEMPLATE_NAME = /^[а-яёa-z\d]{3,}$/i
+  MSG_INCORRECT_NAME = 'Name station is not correct'
 
   def initialize(name)
     @name = name
     @trains = []
-    @@stations << self
     validate!
+    @@stations << self
     register_instance
   end
 
@@ -36,6 +37,6 @@ class Station
   protected
 
   def validate!
-    raise puts 'Name station is not correct' if name !~ TEMPLATE_NAME
+    raise MSG_INCORRECT_NAME if name !~ TEMPLATE_NAME
   end
 end

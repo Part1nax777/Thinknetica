@@ -127,7 +127,7 @@ class Main
     puts 'Enter station name: '
     name = gets.chomp
     @stations << Station.new(name)
-  rescue TypeError => e
+  rescue RuntimeError => e
     puts "Error: #{e.message}"
     retry
   end
@@ -157,7 +157,7 @@ class Main
       @trains << PassengerTrain.new(number)
       puts "Passenger train #{number} is create"
     end
-  rescue TypeError => e
+  rescue RuntimeError => e
     puts "Error: #{e.message}"
     retry
   end
@@ -203,8 +203,10 @@ class Main
     puts 'Finish route'
     last_station = select_station(@stations)
     return if first_station.nil? || last_station.nil?
-    return if first_station == last_station
     @routes << Route.new(first_station, last_station)
+  rescue RuntimeError => e
+    puts "#{e.message}"
+    retry
   end
 
   def add_station

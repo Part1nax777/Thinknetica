@@ -1,6 +1,6 @@
 require_relative 'company_name'
 require_relative 'instance_counter'
-require_relative 'valid'
+require_relative 'validator'
 
 class Train
   include CompanyName
@@ -9,7 +9,8 @@ class Train
   attr_reader :number, :type, :quantity_wagons, :speed, :route
 
   @@trains = {}
-  TEMPLATE_NUMBER = /(^([\w]{3}[-]?[\w]{2})|([А-Яа-я0-9]{3}[-]?[А-Яа-я0-9]{2})$)/
+  TEMPLATE_NUMBER = /^[a-zа-я\d[^_]]{3}[-]?[a-zа-я\d[^_]]{2}$/i
+  MSG_INCORRECT_NUMBER = 'Number must be in pattern XXX-XX or XXXXX'
 
   def initialize(number)
     @number = number
@@ -18,8 +19,8 @@ class Train
     @route = nil
     @quantity_wagons = []
     @station_index = 0
-    @@trains[number] = self
     validate!
+    @@trains[number] = self
     register_instance
   end
 
@@ -88,6 +89,6 @@ class Train
   protected
 
   def validate!
-    raise puts 'number must be in pattern XXX-XX or XXXXX' if number !~ TEMPLATE_NUMBER
+    raise MSG_INCORRECT_NUMBER if number !~ TEMPLATE_NUMBER
   end
 end
