@@ -21,6 +21,7 @@ class Main
   1. Stations
   2. Trains
   3. Routes
+  0. Exit from program
   MENU
 
   STATION_MENU = <<-MENU.freeze
@@ -29,7 +30,7 @@ class Main
   2. Train list at the station
   3. Show station list
   4. Enter main menu
-  5. Exit from program
+  0. Exit from program
   MENU
 
   TRAINS_MENU = <<-MENU.freeze
@@ -41,8 +42,9 @@ class Main
   5. Moving next station
   6. Moving previouse station
   7. Show wagons stat
-  8. Exit from main menu
-  9. Exit from program
+  8. Load wagon
+  9. Exit from main menu
+  0. Exit from program
   MENU
 
   ROUTES_MENU = <<-MENU.freeze
@@ -51,7 +53,7 @@ class Main
   2. Add station to route
   3. Delete station from route
   4. Enter main menu
-  5. Exit from program
+  0. Exit from program
   MENU
 
   CHANGE_TYPE_TRAIN = <<-MENU.freeze
@@ -74,7 +76,7 @@ class Main
       when 1 then station_menu
       when 2 then trains_menu
       when 3 then routes_menu
-      when 4 then exit
+      when 0 then exit
       end
     end
   end
@@ -88,7 +90,7 @@ class Main
       when 2 then show_trains
       when 3 then station_list
       when 4 then break
-      when 5 then exit
+      when 0 then exit
       end
     end
   end
@@ -105,8 +107,9 @@ class Main
       when 5 then moving_next_station
       when 6 then moving_previouse_station
       when 7 then show_wagons
-      when 8 then break
-      when 9 then exit
+      when 8 then load_wagon
+      when 9 then break
+      when 0 then exit
       end
     end
   end
@@ -120,7 +123,7 @@ class Main
       when 2 then add_station
       when 3 then del_station
       when 4 then break
-      when 5 then exit
+      when 0 then exit
       end
     end
   end
@@ -195,6 +198,19 @@ class Main
 
   def load_wagon
     train = select_train
+    puts 'Enter number of wagon: '
+    train.quantity_wagons.each_with_index do |index, wagon|
+      puts "#{index + 1}. #{wagon.class}"
+      wagon_index = gets.to_i
+      if train.class == CargoTrain
+        puts 'Enter volume to load: '
+        volume = gets.to_i
+        train.quantity_wagons[wagon_index - 1].cargo_capacity(volume)
+      else
+        train.quantity_wagons[wagon_index - 1].add_occupied_place
+        puts 'You occuped place in passenger_wagon'
+      end
+    end
   end
 
   def unhook_wagon

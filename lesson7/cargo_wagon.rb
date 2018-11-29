@@ -3,14 +3,12 @@ class CargoWagon < Wagon
 
   def initialize(wagon_capacity)
     @wagon_capacity = wagon_capacity
-    @cargo = 0
+    
   end
 
   def cargo_capacity(cargo)
-    @cargo ||= 0
-    if @cargo <= @wagon_capacity
-      @cargo += cargo
-    end
+    @cargo = cargo 
+    @wagon_capacity -= cargo
   end
 
   def all_cargo_capacity
