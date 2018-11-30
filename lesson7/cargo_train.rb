@@ -3,7 +3,7 @@ class CargoTrain < Train
 
   def initialize(number)
     super
-    @type = :cargo 
+    @type = :cargo
   end
 
   def attachable_wagon?(wagon)

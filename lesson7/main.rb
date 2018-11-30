@@ -180,9 +180,9 @@ class Main
     train = select_train
     train.wagon_in_block do |wagon|
       if wagon.class == CargoWagon
-        puts "#{wagon.class}. Free space: #{wagon.free_wagon_capacity}, occupied space: #{wagon.all_cargo_capacity}"
+        puts "#{wagon.class}. Free space: #{wagon.wagon_capacity}, occupied space: #{wagon.cargo}"
       else
-        puts "#{wagon.class}. Free seats: #{wagon.quantity_free_places}, taken seats: #{wagon.quantity_occupied_places}"
+        puts "#{wagon.class}. Free seats: #{wagon.total_places}, taken seats: #{wagon.occupied_places}"
       end
     end
   end
@@ -199,8 +199,9 @@ class Main
   def load_wagon
     train = select_train
     puts 'Enter number of wagon: '
-    train.quantity_wagons.each_with_index do |index, wagon|
+    train.quantity_wagons.each_with_index do |wagon, index|
       puts "#{index + 1}. #{wagon.class}"
+      end
       wagon_index = gets.to_i
       if train.class == CargoTrain
         puts 'Enter volume to load: '
@@ -210,7 +211,9 @@ class Main
         train.quantity_wagons[wagon_index - 1].add_occupied_place
         puts 'You occuped place in passenger_wagon'
       end
-    end
+    rescue RuntimeError => e
+      puts "Error: #{e.message}"
+      retry
   end
 
   def unhook_wagon
