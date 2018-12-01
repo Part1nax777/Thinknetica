@@ -7,5 +7,6 @@ class CargoWagon < Wagon
 
   def add_capacity(capacity)
     raise "You have so many cargo, spase: #{self.volume}" if self.volume < (free_place + capacity)
+    super
   end
 end
