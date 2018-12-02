@@ -180,9 +180,9 @@ class Main
     train = select_train
     train.each_wagon do |wagon|
       if wagon.class == CargoWagon
-        puts "#{wagon.class}. Free space: #{wagon.volume}, occupied space: #{wagon.free_place}"
+        puts "#{wagon.class}. Free space: #{wagon.free_capacity}, occupied space: #{wagon.filled_capacity}"
       else
-        puts "#{wagon.class}. Free seats: #{wagon.volume}, taken seats: #{wagon.free_place}"
+        puts "#{wagon.class}. Free seats: #{wagon.free_capacity}, taken seats: #{wagon.filled_capacity}"
       end
     end
   end
