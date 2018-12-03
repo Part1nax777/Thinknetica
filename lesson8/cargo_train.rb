@@ -1,12 +1,12 @@
-class PassengerTrain < Train
+class CargoTrain < Train
   attr_reader :type
 
   def initialize(number)
     super
-    @type = :passenger
+    @type = :cargo
   end
 
   def attachable_wagon?(wagon)
-    wagon.is_a?(PassengerWagon)
+    wagon.is_a?(CargoWagon)
   end
 end
