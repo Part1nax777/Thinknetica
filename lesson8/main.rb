@@ -14,109 +14,87 @@ class Main
     @trains = []
   end
 
-  MAIN_MENU = <<-MENU.freeze
-  Main Menu
-  Select menu item
-  1. Stations
-  2. Trains
-  3. Routes
-  0. Exit from program
-  MENU
-
-  STATION_MENU = <<-MENU.freeze
-  Menu Station
-  1. Create station
-  2. Train list at the station
-  3. Show station list
-  4. Enter main menu
-  MENU
-
-  TRAINS_MENU = <<-MENU.freeze
-  Menu Trains
-  1. Create train
-  2. Set route
-  3. Hook wagon
-  4. Unhook wagon
-  5. Moving next station
-  6. Moving previouse station
-  7. Show wagons stat
-  8. Load wagon
-  9. Exit from main menu
-  MENU
-
-  ROUTES_MENU = <<-MENU.freeze
-  Menu routes
-  1. Create route
-  2. Add station to route
-  3. Delete station from route
-  4. Enter main menu
-  MENU
-
   CHANGE_TYPE_TRAIN = <<-MENU.freeze
   Enter train type:
   1. Cargo
   2. Passenger
   MENU
 
-  CHOISE_MAIN_MENU = { 1 => :station_menu,
-                       2 => :trains_menu,
-                       3 => :routes_menu }.freeze
+  TEXT_MAIN = 'Main menu, make you choise: '.freeze
+  TEXT_STATION = 'Stations menu, make you choise: '.freeze
+  TEXT_TRAINS = 'Trains menu, make you choise: '.freeze
+  TEXT_ROUTES = 'Routes menu, make you choise: '.freeze
 
-  CHOISE_STATION_MENU = { 1 => :create_station,
-                          2 => :show_trains,
-                          3 => :station_list }.freeze
+  STATION_MENU = [
+    { handler: :create_station, title: 'Create station' },
+    { handler: :show_trains, title: 'Train list at the station' },
+    { handler: :station_list, title: 'Show station list' },
+    { handler: :show_menu, title: 'Exit main menu' }
+  ].freeze
 
-  CHOISE_TRAINS_MENU = { 1 => :create_train,
-                         2 => :set_route,
-                         3 => :hook_wagon,
-                         4 => :unhook_wagon,
-                         5 => :moving_next_station,
-                         6 => :moving_previouse_station,
-                         7 => :show_wagons,
-                         8 => :load_wagon }.freeze
+  TRAINS_MENU = [
+    { handler: :create_train, title: 'Create train' },
+    { handler: :set_route, title: 'Set route' },
+    { handler: :hook_wagon, title: 'Hook wagon' },
+    { handler: :unhook_wagon, title: 'Unhook wagon' },
+    { handler: :moving_next_station, title: 'Moving next station' },
+    { handler: :moving_previouse_station, title: 'Moving previouse station' },
+    { handler: :show_wagons, title: 'Show wagons stat' },
+    { handler: :load_wagon, title: 'Load wagon' },
+    { handler: :show_menu, title: 'Exit main menu' }
+  ].freeze
 
-  CHOISE_ROUTES_MENU = { 1 => :create_route,
-                         2 => :add_station,
-                         3 => :del_station }.freeze
+  ROUTES_MENU = [
+    { handler: :create_route, title: 'Create route' },
+    { handler: :add_station, title: 'Add station to route' },
+    { handler: :del_station, title: 'Delete station from route' },
+    { handler: :show_menu, title: 'Exit main menu' }
+  ].freeze
+
+  MAIN_MENU = [
+    { handler: :station_menu, title: 'Stations' },
+    { handler: :trains_menu, title: 'Trains' },
+    { handler: :routes_menu, title: 'Routes' },
+    { handler: :exit_program, title: 'Exit' }
+  ].freeze
 
   def start
-    main_menu
+    show_menu
   end
 
   private
 
   # this methods used in other methods.
 
-  def main_menu
+  def show_menu(title = TEXT_MAIN, menu = MAIN_MENU)
     loop do
-      puts MAIN_MENU
-      menu_item = gets.to_i
-      send CHOISE_MAIN_MENU[menu_item] || exit
+      puts title
+      show_menu_items(menu)
+      selected_index = gets.to_i
+      selected_item = menu[selected_index - 1] || break
+      send(selected_item[:handler])
     end
+  end
+
+  def show_menu_items(menu)
+    menu.each_with_index { |item, count| puts "#{count + 1}. #{item[:title]}" }
   end
 
   def station_menu
-    loop do
-      puts STATION_MENU
-      menu_item = gets.to_i
-      send CHOISE_STATION_MENU[menu_item] || break
-    end
+    show_menu(TEXT_STATION, STATION_MENU)
   end
 
   def trains_menu
-    loop do
-      puts TRAINS_MENU
-      menu_item = gets.to_i
-      send CHOISE_TRAINS_MENU[menu_item] || break
-    end
+    show_menu(TEXT_TRAINS, TRAINS_MENU)
   end
 
   def routes_menu
-    loop do
-      puts ROUTES_MENU
-      menu_item = gets.to_i
-      send CHOISE_ROUTES_MENU[menu_item] || break
-    end
+    show_menu(TEXT_ROUTES, ROUTES_MENU)
+  end
+
+  def exit_program
+    puts 'Good bay, welcome you again'
+    exit
   end
 
   def create_station
