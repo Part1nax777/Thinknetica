@@ -1,0 +1,30 @@
+module Accessors
+  def attr_accessor_with_history(*names)
+    names.each do |name|
+      instance_var = "@#{name}".to_sym
+      history_var = "@#{name}_history".to_sym
+      define_method(name) { instance_variable_get(instance_var) }
+      define_method("#{name}_history") { instance_variable_get(history_var) }
+      define_method("#{name}=") do |value|
+        if instance_variable_get(history_var).nil?
+          instance_variable_set(history_var, [instance_variable_get(instance_var)])
+        else
+          instance_variable_get(history_var).push(instance_variable_get(instance_var))
+        end
+        instance_variable_set(instance_var, value)
+      end
+    end
+  end
+
+  def strong_attr_accessor(name, type)
+    name = "@#{name}"
+    define_method(name) { instance_variable_get(name) }
+    define_method("@#{name}=") do |value|
+      if value.is_a?(type)
+        instance_variable_set(name, value)
+      else
+        raise(TypeError, 'Incorrerct class')
+      end
+    end
+  end
+end
