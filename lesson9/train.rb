@@ -8,7 +8,7 @@ class Train
   include InstanceCounter
   extend Accessors
   include Validation
-  attr_reader :number, :type, :wagons, :speed, :route
+  attr_reader :type, :wagons, :speed
 
   class << self
     def trains
@@ -19,11 +19,12 @@ class Train
   TEMPLATE_NUMBER = /^[a-zа-я\d]{3}[-]?[a-zа-я\d]{2}$/i.freeze
   MSG_INCORRECT_NUMBER = 'Number must be in pattern XXX-XX or XXXXX'.freeze
 
-  attr_accessor_with_history :number
+  attr_accessor_with_history :route
   strong_attr_accessor :number, String
+  
   validate :number, :presence
   validate :number, :format, TEMPLATE_NUMBER
-  validate :number, :type, 'Train'
+  validate :number, :type, String
 
   def initialize(number)
     @number = number
@@ -101,11 +102,5 @@ class Train
 
   def each_wagon
     @wagons.each { |wagon| yield(wagon) }
-  end
-
-  protected
-
-  def validate!
-    raise MSG_INCORRECT_NUMBER if number !~ TEMPLATE_NUMBER
   end
 end

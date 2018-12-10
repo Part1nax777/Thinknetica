@@ -7,7 +7,7 @@ module Accessors
       define_method("#{name}_history") { instance_variable_get(history_var) }
       define_method("#{name}=") do |value|
         if instance_variable_get(history_var).nil?
-          instance_variable_set(history_var, [instance_variable_get(instance_var)])
+          instance_variable_set(history_var, [])
         else
           instance_variable_get(history_var).push(instance_variable_get(instance_var))
         end
@@ -19,12 +19,10 @@ module Accessors
   def strong_attr_accessor(name, type)
     name = "@#{name}"
     define_method(name) { instance_variable_get(name) }
-    define_method("@#{name}=") do |value|
-      if value.is_a?(type)
-        instance_variable_set(name, value)
-      else
-        raise(TypeError, 'Incorrerct class')
-      end
+    define_method("#{name}=") do |value|
+      raise(TypeError, 'Incorrect class') unless value.is_a?(type)
+
+      instance_variable_set(name, value)
     end
   end
 end
