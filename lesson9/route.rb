@@ -13,9 +13,10 @@ class Route
   validate :last_station, :type, Station
 
   def initialize(first_station, last_station)
-    @stations = [first_station, last_station]
+    @first_station = first_station
+    @last_station = last_station
     validate!
-    register_instance
+    @stations = [first_station, last_station]
   end
 
   def add_intermediate_station(station)
@@ -30,20 +31,5 @@ class Route
 
   def output_stations
     @stations.each { |station| puts station.name }
-  end
-
-  protected
-
-  def validate!
-    return FIRST_AND_LAST_EQL if station_eql?
-    raise FIRST_AND_LAST_NOT_STATIONS unless station_class?
-  end
-
-  def station_class?
-    @stations[0].is_a?(Station) && @stations[1].is_a?(Station)
-  end
-
-  def station_eql?
-    @stations[0] == @stations[1]
   end
 end

@@ -24,11 +24,9 @@ module Validation
     protected
 
     def validate!
-      self.class.validations.each do |rule|
-        rule.each do |type, params|
-          value = get_instance_var_by_name(params[:name])
-          send("validate_#{type}", value, *params[:arg])
-        end
+      self.class.validations.each do |params|
+        value = get_instance_var_by_name(params[:name])
+        send("validate_#{params[:type]}", value, *params[:arg])
       end
     end
 
@@ -45,7 +43,7 @@ module Validation
     end
 
     def get_instance_var_by_name(name)
-      var_name = "@#{name}".to_s
+      var_name = "@#{name}"
       instance_variable_get(var_name)
     end
   end

@@ -19,12 +19,7 @@ class Train
   TEMPLATE_NUMBER = /^[a-zа-я\d]{3}[-]?[a-zа-я\d]{2}$/i.freeze
   MSG_INCORRECT_NUMBER = 'Number must be in pattern XXX-XX or XXXXX'.freeze
 
-  attr_accessor_with_history :route
   strong_attr_accessor :number, String
-  
-  validate :number, :presence
-  validate :number, :format, TEMPLATE_NUMBER
-  validate :number, :type, String
 
   def initialize(number)
     @number = number

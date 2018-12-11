@@ -17,12 +17,12 @@ module Accessors
   end
 
   def strong_attr_accessor(name, type)
-    name = "@#{name}"
-    define_method(name) { instance_variable_get(name) }
+    instance_variable_name = "@#{name}"
+    define_method(name) { instance_variable_get(instance_variable_name) }
     define_method("#{name}=") do |value|
       raise(TypeError, 'Incorrect class') unless value.is_a?(type)
 
-      instance_variable_set(name, value)
+      instance_variable_set(instance_variable_name, value)
     end
   end
 end

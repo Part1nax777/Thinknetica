@@ -47,10 +47,4 @@ class Station
   def each_train
     @trains.each { |train| yield(train) }
   end
-
-  protected
-
-  def validate!
-    raise MSG_INCORRECT_NAME if name !~ TEMPLATE_NAME
-  end
 end
